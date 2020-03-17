@@ -2,5 +2,6 @@
 
 //used to interact
 module.exports = {
-    haart
-};
+    haart,
+    canvas
+}; 
