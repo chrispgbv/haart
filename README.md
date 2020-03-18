@@ -1,2 +1,4 @@
 # haart
-Bachelor on creating a js library for graphs
+Getting started with haart.js 
+
+

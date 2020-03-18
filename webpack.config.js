@@ -7,6 +7,9 @@ module.exports = {
     filename: 'haart.js',
      library: 'haart',
   },
+  mode: 'development',
+  devtool: 'sourceMap',
+
   externals: {
     lodash: {
       commonjs: 'lodash',
