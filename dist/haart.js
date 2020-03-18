@@ -87,9 +87,9 @@ var haart =
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/canvas.js":
+/***/ "./lib/canvas.js":
 /*!***********************!*\
-  !*** ./src/canvas.js ***!
+  !*** ./lib/canvas.js ***!
   \***********************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -99,7 +99,6 @@ __webpack_require__.r(__webpack_exports__);
 //creates the background of the chart
 function getCanvas(num) {
     var el = document.getElementById('myCanvas');
-    console.log(el);
     var ctx = el.getContext('2d');
     console.log(el.width);
     if(num == 2){
@@ -110,29 +109,40 @@ function getCanvas(num) {
 
 /***/ }),
 
-/***/ "./src/index.js":
+/***/ "./lib/index.js":
 /*!**********************!*\
-  !*** ./src/index.js ***!
+  !*** ./lib/index.js ***!
   \**********************/
 /*! exports provided: getCanvas */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvas.js */ "./lib/canvas.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCanvas", function() { return _canvas_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "lodash");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./canvas.js */ "./src/canvas.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCanvas", function() { return _canvas_js__WEBPACK_IMPORTED_MODULE_1__["default"]; });
-
-console.log('The index.js is working')
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib */ "./lib/index.js");
 
 
 
-
-
-Object(_canvas_js__WEBPACK_IMPORTED_MODULE_1__["default"])(2);
-
-
+console.log(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])(2));
 
 /***/ }),
 
