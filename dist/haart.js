@@ -96,14 +96,11 @@ var haart =
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//creates the background of the chart
-function getCanvas(num) {
-    var el = document.getElementById('myCanvas');
-    var ctx = el.getContext('2d');
-    console.log(el.width);
-    if(num == 2){
-       console.log('you got in')
-    }
+//returns the context so it can be used 
+function getCanvas(name) {
+    var con = document.getElementById(name);
+    var ctx = con.getContext('2d');
+    return ctx
 }
 /* harmony default export */ __webpack_exports__["default"] = (getCanvas);
 
@@ -113,7 +110,7 @@ function getCanvas(num) {
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas */
+/*! exports provided: getCanvas, outer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -121,9 +118,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvas.js */ "./lib/canvas.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCanvas", function() { return _canvas_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
+/* harmony import */ var _outer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outer.js */ "./lib/outer.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "outer", function() { return _outer_js__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 
 
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./lib/outer.js":
+/*!**********************!*\
+  !*** ./lib/outer.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+function outer(ctx){
+    ctx.beginPath();
+    ctx.fillStyle = 'rgb(200, 0, 0)';
+    ctx.fillRect(10, 20, 50, 60);
+    ctx.stroke;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (outer);
 
 /***/ }),
 
@@ -142,7 +167,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-console.log(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])(2));
+
+console.log(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'));
+
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'))
 
 /***/ }),
 
