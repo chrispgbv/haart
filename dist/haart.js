@@ -141,11 +141,15 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function outer(ctx){
+function outer(ctx,color,w,h){
+
+    ctx.canvas.width = w;
+    ctx.canvas.height = h;
     ctx.beginPath();
-    ctx.fillStyle = 'rgb(200, 0, 0)';
-    ctx.fillRect(10, 20, 50, 60);
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, w, h);
     ctx.stroke;
+
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (outer);
@@ -170,7 +174,7 @@ __webpack_require__.r(__webpack_exports__);
 
 console.log(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'));
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'))
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),'#e4e7f5',400,250)
 
 /***/ }),
 

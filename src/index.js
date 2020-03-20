@@ -4,4 +4,4 @@ import {outer} from '../lib';
 
 console.log(getCanvas('myCanvas'));
 
-outer(getCanvas('myCanvas'))
+outer(getCanvas('myCanvas'),'#e4e7f5',400,250)
