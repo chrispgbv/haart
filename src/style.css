@@ -3,7 +3,7 @@
     --input-padding-y: 0.75rem;
   }
   
-  .login,
+  .heeight,
   .image {
     min-height: 100vh;
   }
@@ -19,21 +19,18 @@
     margin-top: 40%;
   }
   
-  .login-heading {
-    font-weight: 300;
-  }
-  
-  .btn-login {
-    font-size: 0.9rem;
-    letter-spacing: 0.05rem;
-    padding: 0.75rem 1rem;
-    border-radius: 2rem;
-  }
-
   .bg-img2{
     background-color: 	#e6aed0;
   }
-  
 
+  .bgcanv{
+
+    background-color: #e4e7f5;
+    width: 430px;
+    height:270px;
+    margin-left: 15%;
+    border-radius: 2%;
+
+  }
 
   
