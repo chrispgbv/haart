@@ -141,7 +141,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function outer(ctx,color,w,h){
+function outer(ctx,color,w,h,axis){
 
     ctx.canvas.width = w;
     ctx.canvas.height = h;
@@ -150,6 +150,37 @@ function outer(ctx,color,w,h){
     ctx.fillRect(0, 0, w, h);
     ctx.stroke;
 
+    if (axis == 'axis'){
+        ctx.beginPath();
+        ctx.moveTo(1, h-1);
+        ctx.lineTo(w-1, h-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    
+        ctx.beginPath();
+        ctx.moveTo(1, 1);
+        ctx.lineTo(1, h-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+    }
+    else if(axis == 'axisx'){
+        ctx.beginPath();
+        ctx.moveTo(1, h-1);
+        ctx.lineTo(w-1, h-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+    else if(axis == 'axisy'){
+        ctx.beginPath();
+        ctx.moveTo(1, 1);
+        ctx.lineTo(1, h-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+
+    console.log(ctx.canvas.width)
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (outer);
@@ -172,9 +203,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-console.log(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'));
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),'#e4e7f5',400,250)
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
+    '#e4e7f5', 
+    400,
+    250,
+    'axisx'
+)
+
 
 /***/ }),
 

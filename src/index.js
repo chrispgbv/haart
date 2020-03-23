@@ -2,6 +2,11 @@ import _ from 'lodash';
 import {getCanvas} from '../lib';
 import {outer} from '../lib';
 
-console.log(getCanvas('myCanvas'));
+getCanvas('myCanvas');
 
-outer(getCanvas('myCanvas'),'#e4e7f5',400,250)
+outer(getCanvas('myCanvas'),
+    '#e4e7f5', 
+    400,
+    250,
+    'axisx'
+)
