@@ -106,11 +106,66 @@ function getCanvas(name) {
 
 /***/ }),
 
+/***/ "./lib/grid.js":
+/*!*********************!*\
+  !*** ./lib/grid.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+function grid(ctx,w, h,style) {
+
+
+    if(style == 'dotted'){
+        for (var x = 25; x <= h; x += 25) {
+            ctx.beginPath();
+            ctx.setLineDash([1, 5]);
+            ctx.moveTo(0, x);
+            ctx.lineTo(w, x);
+            ctx.strokeStyle = '#aeaeae';
+            ctx.stroke();
+        }
+    }
+
+    else if(style == 'grid'){
+
+        let s = 20
+        let nX = Math.floor(w / s) - 2
+        let nY = Math.floor(h / s) - 2
+        let pX = w - nX * s
+        let pY = h - nY * s
+        let pL = pX / 2
+        let pR = pX / 2
+        let pT = pY / 2
+        let pB = pY / 2
+        
+        ctx.strokeStyle = '#aeaeae'
+        ctx.beginPath()
+        for (var x = 0; x <= w; x += s) {
+           ctx.moveTo(x, pT)
+           ctx.lineTo(x, w)
+        }
+        for (var y = 0; y <= w; y += s) {
+           ctx.moveTo(0, y)
+           ctx.lineTo(w, y)
+        }
+        ctx.stroke()
+    }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (grid);
+
+/***/ }),
+
 /***/ "./lib/index.js":
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas, outer */
+/*! exports provided: getCanvas, outer, grid */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -120,6 +175,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _outer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./outer.js */ "./lib/outer.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "outer", function() { return _outer_js__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _grid_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./grid.js */ "./lib/grid.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "grid", function() { return _grid_js__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+
+
 
 
 
@@ -203,13 +264,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     '#e4e7f5', 
     400,
-    250,
+    240,
     'axisx'
+)
+
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
+    400,
+    240,
+    'dotted'
+
 )
 
 
