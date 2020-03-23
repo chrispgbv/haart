@@ -15,6 +15,6 @@ outer(getCanvas('myCanvas'),
 grid(getCanvas('myCanvas'),
     400,
     240,
-    'dotted'
-
+    '#4159a1',
+    'dotted',
 )

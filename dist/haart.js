@@ -116,7 +116,7 @@ function getCanvas(name) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function grid(ctx,w, h,style) {
+function grid(ctx,w, h,color,style) {
 
 
     if(style == 'dotted'){
@@ -125,7 +125,7 @@ function grid(ctx,w, h,style) {
             ctx.setLineDash([1, 5]);
             ctx.moveTo(0, x);
             ctx.lineTo(w, x);
-            ctx.strokeStyle = '#aeaeae';
+            ctx.strokeStyle = color;
             ctx.stroke();
         }
     }
@@ -142,7 +142,7 @@ function grid(ctx,w, h,style) {
         let pT = pY / 2
         let pB = pY / 2
         
-        ctx.strokeStyle = '#aeaeae'
+        ctx.strokeStyle = color;
         ctx.beginPath()
         for (var x = 0; x <= w; x += s) {
            ctx.moveTo(x, pT)
@@ -277,8 +277,8 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     400,
     240,
-    'dotted'
-
+    '#4159a1',
+    'dotted',
 )
 
 
