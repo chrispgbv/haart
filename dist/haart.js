@@ -98,8 +98,8 @@ var haart =
 __webpack_require__.r(__webpack_exports__);
 //returns the context so it can be used 
 function getCanvas(name) {
-    var con = document.getElementById(name);
-    var ctx = con.getContext('2d');
+    var canvas = document.getElementById(name);
+    var ctx = canvas.getContext('2d');
     return ctx
 }
 /* harmony default export */ __webpack_exports__["default"] = (getCanvas);
@@ -116,11 +116,13 @@ function getCanvas(name) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function grid(ctx,w, h,color,style) {
+function grid(ctx,color,style) {
 
+    var w = ctx.canvas.width;
+    var h = ctx.canvas.height;
 
     if(style == 'dotted'){
-        for (var x = 25; x <= h; x += 25) {
+        for (var x = 40; x <= h; x += 40) {
             ctx.beginPath();
             ctx.setLineDash([1, 5]);
             ctx.moveTo(0, x);
@@ -202,10 +204,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function outer(ctx,color,w,h,axis){
+function outer(ctx,color,axis){
 
-    ctx.canvas.width = w;
-    ctx.canvas.height = h;
+    var w = ctx.canvas.width;
+    var h = ctx.canvas.height;
+
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, w, h);
@@ -239,8 +242,6 @@ function outer(ctx,color,w,h,axis){
         ctx.lineWidth = 1;
         ctx.stroke();
     }
-
-
     console.log(ctx.canvas.width)
 }
 
@@ -269,14 +270,10 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     '#e4e7f5', 
-    400,
-    240,
     'axisx'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
-    400,
-    240,
     '#4159a1',
     'dotted',
 )
