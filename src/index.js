@@ -13,6 +13,7 @@ outer(getCanvas('myCanvas'),
 
 grid(getCanvas('myCanvas'),
     '#4159a1',
+    'dotted'
 )
 
 axis(

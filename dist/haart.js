@@ -100,6 +100,7 @@ function axis(ctx,axisx,axisy){
 
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
+    ctx.setLineDash([0,0]);
 
     if(axisy == undefined){
         ctx.beginPath();
@@ -149,7 +150,6 @@ function axis(ctx,axisx,axisy){
         ctx.stroke();
 
     }
-
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (axis);
@@ -287,7 +287,6 @@ function outer(ctx,color,axis){
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, w, h);
     ctx.stroke;
-
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (outer);
@@ -321,6 +320,7 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     '#4159a1',
+    'dotted'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(
