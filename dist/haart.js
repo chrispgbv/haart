@@ -87,6 +87,75 @@ var haart =
 /************************************************************************/
 /******/ ({
 
+/***/ "./lib/axis.js":
+/*!*********************!*\
+  !*** ./lib/axis.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function axis(ctx,axisx,axisy){
+
+    var w = ctx.canvas.width;
+    var h = ctx.canvas.height;
+
+    if(axisy == undefined){
+        ctx.beginPath();
+        ctx.moveTo(1, h-1);
+        ctx.lineTo(w-1, h-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+    else if(axisx == w && axisy == h){
+        ctx.beginPath();
+        ctx.moveTo(1, axisy-1);
+        ctx.lineTo(axisx-1, axisy-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    
+        ctx.beginPath();
+        ctx.moveTo(1, 1);
+        ctx.lineTo(1, axisy-1)
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    else if(typeof axisx == 'number' && typeof axisy == 'number'){
+        ctx.beginPath();
+        ctx.moveTo(0, axisy);
+        ctx.lineTo(w, axisy)
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        ctx.beginPath();
+        ctx.moveTo(axisx,0);
+        ctx.lineTo(axisx, h)
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+    else if(axisx == 'middle' && axisy == 'middle'){
+        ctx.beginPath();
+        ctx.moveTo(0, h/2);
+        ctx.lineTo(w, h/2)
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        ctx.beginPath();
+        ctx.moveTo(w/2,0);
+        ctx.lineTo(w/2, h)
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+    }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (axis);
+
+/***/ }),
+
 /***/ "./lib/canvas.js":
 /*!***********************!*\
   !*** ./lib/canvas.js ***!
@@ -131,7 +200,6 @@ function grid(ctx,color,style) {
             ctx.stroke();
         }
     }
-
     else if(style == 'grid'){
 
         let s = 20
@@ -167,7 +235,7 @@ function grid(ctx,color,style) {
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas, outer, grid */
+/*! exports provided: getCanvas, outer, grid, axis */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -180,6 +248,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _grid_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./grid.js */ "./lib/grid.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "grid", function() { return _grid_js__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _axis_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./axis.js */ "./lib/axis.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "axis", function() { return _axis_js__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+
+
 
 
 
@@ -214,35 +288,6 @@ function outer(ctx,color,axis){
     ctx.fillRect(0, 0, w, h);
     ctx.stroke;
 
-    if (axis == 'axis'){
-        ctx.beginPath();
-        ctx.moveTo(1, h-1);
-        ctx.lineTo(w-1, h-1)
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    
-        ctx.beginPath();
-        ctx.moveTo(1, 1);
-        ctx.lineTo(1, h-1)
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-    }
-    else if(axis == 'axisx'){
-        ctx.beginPath();
-        ctx.moveTo(1, h-1);
-        ctx.lineTo(w-1, h-1)
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-    else if(axis == 'axisy'){
-        ctx.beginPath();
-        ctx.moveTo(1, 1);
-        ctx.lineTo(1, h-1)
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-    console.log(ctx.canvas.width)
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (outer);
@@ -266,16 +311,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     '#e4e7f5', 
-    'axisx'
+    'axisxm'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     '#4159a1',
-    'dotted',
+)
+
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
+    'middle',
+    'middle'
 )
 
 
