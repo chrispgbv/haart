@@ -96,61 +96,52 @@ var haart =
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function axis(ctx,axisx,axisy){
-
+//function for creating the axis
+function axis(ctx, axisx, axisy) {
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
-    ctx.setLineDash([0,0]);
+    ctx.strokeStyle = 'black'
+    //if axis function is below grid function 
+    // and grid is dotted this removes the axis from
+    // dotted back to normal line
+    ctx.setLineDash([0, 0]);
 
-    if(axisy == undefined){
+    function lines(ctx, moveto1, moveto2, lineto1, lineto2, linewidth) {
         ctx.beginPath();
-        ctx.moveTo(1, h-1);
-        ctx.lineTo(w-1, h-1)
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-    else if(axisx == w && axisy == h){
-        ctx.beginPath();
-        ctx.moveTo(1, axisy-1);
-        ctx.lineTo(axisx-1, axisy-1)
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    
-        ctx.beginPath();
-        ctx.moveTo(1, 1);
-        ctx.lineTo(1, axisy-1)
-        ctx.lineWidth = 1;
+        ctx.moveTo(moveto1, moveto2);
+        ctx.lineTo(lineto1, lineto2)
+        ctx.lineWidth = linewidth;
         ctx.stroke();
     }
 
-    else if(typeof axisx == 'number' && typeof axisy == 'number'){
-        ctx.beginPath();
-        ctx.moveTo(0, axisy);
-        ctx.lineTo(w, axisy)
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    
-        ctx.beginPath();
-        ctx.moveTo(axisx,0);
-        ctx.lineTo(axisx, h)
-        ctx.lineWidth = 2;
-        ctx.stroke();
+    if (axisy == undefined) {
+
+       lines(ctx,1,h-1,w-1,h-1,1)
+
     }
-    else if(axisx == 'middle' && axisy == 'middle'){
-        ctx.beginPath();
-        ctx.moveTo(0, h/2);
-        ctx.lineTo(w, h/2)
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    
-        ctx.beginPath();
-        ctx.moveTo(w/2,0);
-        ctx.lineTo(w/2, h)
-        ctx.lineWidth = 2;
-        ctx.stroke();
+
+    else if (axisx == w && axisy == h) {
+
+        lines(ctx,1,axisy-1,axisx-1,axisy-1,1)
+        lines(ctx,1,1,1,axisy-1,1)
+
+    }
+
+    else if (typeof axisx == 'number' && typeof axisy == 'number') {
+
+        lines(ctx, 0, axisy, w, axisy, 2)
+        lines(ctx, axisx, 0, w, axisy, 2)
+    }
+
+    else if (axisx == 'middle' && axisy == 'middle') {
+
+        lines(ctx, 0, h / 2, w, h / 2, 2)
+
+        lines(ctx, w / 2, 0, w / 2, h, 2)
 
     }
 }
+
 
 /* harmony default export */ __webpack_exports__["default"] = (axis);
 
@@ -185,42 +176,82 @@ function getCanvas(name) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function grid(ctx,color,style) {
+function grid(ctx, color, style) {
 
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
 
-    if(style == 'dotted'){
-        for (var x = 40; x <= h; x += 40) {
-            ctx.beginPath();
-            ctx.setLineDash([1, 5]);
-            ctx.moveTo(0, x);
-            ctx.lineTo(w, x);
-            ctx.strokeStyle = color;
-            ctx.stroke();
+    //size variable
+    let s = 0;
+    //finds the best number to use as the size variable
+    if (h % 20 == 0 && w%20 == 0) {
+        s = 20
+    }
+    else if (h % 30 == 0 && w%30 == 0) {
+        s = 30
+    }
+
+    else{
+        for(i = 40;i>=0;i--){
+            if(w%i == 0 && h%i == 0){
+                i = s;
+                break;
+            }
         }
     }
-    else if(style == 'grid'){
 
-        let s = 20
-        let nX = Math.floor(w / s) - 2
-        let nY = Math.floor(h / s) - 2
-        let pX = w - nX * s
-        let pY = h - nY * s
-        let pL = pX / 2
-        let pR = pX / 2
-        let pT = pY / 2
-        let pB = pY / 2
-        
+    function lines(ctx, color,moveto1, moveto2, lineto1, lineto2, linewidth) {
+        ctx.beginPath();
+        ctx.moveTo(moveto1, moveto2);
+        ctx.lineTo(lineto1, lineto2)
+        ctx.lineWidth = linewidth;
         ctx.strokeStyle = color;
-        ctx.beginPath()
+        ctx.stroke();
+    }
+
+    //diferent types of grids for the canvas
+    if (style == 'dotx') {
+        for (var x = s; x <= h; x += s) {
+            ctx.setLineDash([1, 5]);
+            
+            lines(ctx,color,0,x,w,x,1)
+        }
+    }
+
+    //doty does not work yet
+    else if (style == 'doty') {
+        for (var x = s; x <= h; x += s) {
+            ctx.setLineDash([1, 5]);
+            ctx.strokeStyle = color;
+            lines(ctx,color,x,0,x,y,2)
+        }
+    }
+    //todo: add dot both ways
+
+    else if (style == 'grid') {
+
         for (var x = 0; x <= w; x += s) {
-           ctx.moveTo(x, pT)
-           ctx.lineTo(x, w)
+
+            lines(ctx,color,x,0,x,w,2)
         }
         for (var y = 0; y <= w; y += s) {
-           ctx.moveTo(0, y)
-           ctx.lineTo(w, y)
+
+            lines(ctx,color,0,y,w,y,2)
+
+        }
+
+    }
+
+    else if (style == 'gridx') {
+
+        for (var x = 0; x <= w; x += s) {
+            lines(ctx,color,x,0,x,w,2)
+        }
+        ctx.stroke()
+    }
+    else if (style == 'gridy') {
+        for (var y = 0; y <= w; y += s) {
+            lines(ctx,color,0,y,w,y,2)
         }
         ctx.stroke()
     }
@@ -235,7 +266,7 @@ function grid(ctx,color,style) {
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas, outer, grid, axis */
+/*! exports provided: getCanvas, outer, grid, axis, sineCurve1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -251,6 +282,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _axis_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./axis.js */ "./lib/axis.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "axis", function() { return _axis_js__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _sine_ex1_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sine_ex1.js */ "./lib/sine_ex1.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "sineCurve1", function() { return _sine_ex1_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+
+
 
 
 
@@ -278,7 +315,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function outer(ctx,color,axis){
+function outer(ctx,color){
 
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
@@ -290,6 +327,45 @@ function outer(ctx,color,axis){
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (outer);
+
+/***/ }),
+
+/***/ "./lib/sine_ex1.js":
+/*!*************************!*\
+  !*** ./lib/sine_ex1.js ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//creates the sine curve
+function sineCurve1(ctx,step,amplitude,frequency){
+
+  ctx.strokeStyle = 'red'
+    var w = ctx.canvas.width;
+    var h = ctx.canvas.height;
+    //begins new line
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    //constant x axis
+    var x = -1;
+  
+    ctx.moveTo(x,amplitude);
+  
+    //sine curve math --> que 
+    while(x < w){
+      //constant y axis
+      let y = h/2 + amplitude * Math.sin((x+step)/frequency);
+      ctx.lineTo(x,y);
+      x++;
+    }
+  
+    ctx.stroke();
+  }
+
+/* harmony default export */ __webpack_exports__["default"] = (sineCurve1);
+
 
 /***/ }),
 
@@ -311,23 +387,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
-    '#e4e7f5', 
+    '#e4e7f5',
     'axisxm'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
     '#4159a1',
-    'dotted'
+    'dotx'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(
-    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
-    'middle',
-    'middle'
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),'middle','middle'
 )
+
+//creates sine curve, ctx =  canvas, step= time , 50 = height of graph
+let step = 0
+step += 3;
+
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["sineCurve1"])(
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
+    step,
+    50,
+    30
+);
+
+
+
+
 
 
 /***/ }),
