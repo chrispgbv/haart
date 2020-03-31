@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { getCanvas } from '../lib';
+import { getCanvas} from '../lib';
 import { outer } from '../lib';
 import { grid } from '../lib';
 import { axis } from '../lib';
-import { sineCurve1 } from '../lib';
+import { animated } from '../lib';
 
 getCanvas('myCanvas');
 
@@ -18,19 +18,11 @@ grid(getCanvas('myCanvas'),
 )
 
 axis(
-    getCanvas('myCanvas'),'middle','middle'
+    getCanvas('myCanvas'),
 )
+animated();
 
 //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-let step = 0
-step += 3;
-
-sineCurve1(
-    getCanvas('myCanvas'),
-    step,
-    50,
-    30
-);
 
 
 

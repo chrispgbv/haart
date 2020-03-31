@@ -20,7 +20,8 @@
   }
   
   .bg-img2{
-    background-color:#e6aed0;
+
+    background-color: lightpink;
 
   }
 
@@ -45,8 +46,20 @@
    padding-top: 20px;
   }
 
-  /* Navigation bar*/
+  #movingCanvas{
+    position: absolute;
 
+  }
+
+  /*Moving the canvases on top of eachother*/
+  canvas {
+    position: absolute;
+    padding-left: 18px;
+    padding-bottom: 10px;
+}
+
+
+  /* Navigation bar*/
 .nav-link {
   font-family: 'Montserrat', sans-serif;
   font-size: 15px;

@@ -87,6 +87,65 @@ var haart =
 /************************************************************************/
 /******/ ({
 
+/***/ "./lib/animated_sine.js":
+/*!******************************!*\
+  !*** ./lib/animated_sine.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function animated(){
+
+  var canvas = document.getElementById('movingCanvas');
+  var ctx = canvas.getContext('2d');
+  var width = ctx.canvas.width;
+  var height = ctx.canvas.height; 
+  
+  //clears the animation 
+  ctx.clearRect(0,0,width,height)
+
+  //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
+  sineCurve(ctx,width,height,step,50,30);
+  ctx.restore();
+  
+  step +=3;
+  
+  window.requestAnimationFrame(animated);
+  
+  }
+  let step = 0
+  
+  //creates the sine curve
+  function sineCurve(ctx,w,h,step,amplitude,frequency){
+  
+  //begins new line
+  ctx.beginPath();
+  ctx.lineWidth = 2;
+  //constant x axis
+  var x = -1;
+  
+  ctx.moveTo(x,amplitude);
+  
+  //sine curve math --> que 
+  while(x < w){
+    //constant y axis
+    var y = h/2 + amplitude * Math.sin((x+step)/frequency);
+    ctx.lineTo(x,y);
+    x++;
+  }
+  
+  ctx.stroke();
+  
+  }
+
+
+/* harmony default export */ __webpack_exports__["default"] = (animated);
+
+
+/***/ }),
+
 /***/ "./lib/axis.js":
 /*!*********************!*\
   !*** ./lib/axis.js ***!
@@ -114,16 +173,17 @@ function axis(ctx, axisx, axisy) {
         ctx.stroke();
     }
 
-    if (axisy == undefined) {
+    if (axisy == undefined && axisx == undefined) {
 
-       lines(ctx,1,h-1,w-1,h-1,1)
+        lines(ctx, 1, h - 1, w - 1, h - 1, 1)
+        lines(ctx, 1, 1, 1, h - 1, 1)
 
     }
 
     else if (axisx == w && axisy == h) {
 
-        lines(ctx,1,axisy-1,axisx-1,axisy-1,1)
-        lines(ctx,1,1,1,axisy-1,1)
+        lines(ctx, 1, axisy - 1, axisx - 1, axisy - 1, 1)
+        lines(ctx, 1, 1, 1, axisy - 1, 1)
 
     }
 
@@ -138,7 +198,6 @@ function axis(ctx, axisx, axisy) {
         lines(ctx, 0, h / 2, w, h / 2, 2)
 
         lines(ctx, w / 2, 0, w / 2, h, 2)
-
     }
 }
 
@@ -160,9 +219,32 @@ __webpack_require__.r(__webpack_exports__);
 function getCanvas(name) {
     var canvas = document.getElementById(name);
     var ctx = canvas.getContext('2d');
-    return ctx
+
+    return ctx;
+
 }
 /* harmony default export */ __webpack_exports__["default"] = (getCanvas);
+
+/***/ }),
+
+/***/ "./lib/clear.js":
+/*!**********************!*\
+  !*** ./lib/clear.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function clear(ctx){
+    var width = ctx.canvas.width;
+    var height = ctx.canvas.height;
+
+    ctx.clearRect(0,0,width,height);
+}
+/* harmony default export */ __webpack_exports__["default"] = (clear);
+
+
 
 /***/ }),
 
@@ -192,10 +274,12 @@ function grid(ctx, color, style) {
     }
 
     else{
-        for(i = 40;i>=0;i--){
+        for(var i = 40;i>0;i--){
             if(w%i == 0 && h%i == 0){
                 i = s;
+                console.log(i)
                 break;
+        
             }
         }
     }
@@ -256,6 +340,8 @@ function grid(ctx, color, style) {
         ctx.stroke()
     }
 
+    window.requestAnimationFrame(grid)
+
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (grid);
@@ -266,7 +352,7 @@ function grid(ctx, color, style) {
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas, outer, grid, axis, sineCurve1 */
+/*! exports provided: getCanvas, outer, grid, axis, animated, clear */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -283,8 +369,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _axis_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./axis.js */ "./lib/axis.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "axis", function() { return _axis_js__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _sine_ex1_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sine_ex1.js */ "./lib/sine_ex1.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "sineCurve1", function() { return _sine_ex1_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony import */ var _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./animated_sine.js */ "./lib/animated_sine.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "animated", function() { return _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _clear_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./clear.js */ "./lib/clear.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "clear", function() { return _clear_js__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
 
 
@@ -299,7 +388,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ 
 
+ 
+ 
 
 
 
@@ -330,45 +422,6 @@ function outer(ctx,color){
 
 /***/ }),
 
-/***/ "./lib/sine_ex1.js":
-/*!*************************!*\
-  !*** ./lib/sine_ex1.js ***!
-  \*************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//creates the sine curve
-function sineCurve1(ctx,step,amplitude,frequency){
-
-  ctx.strokeStyle = 'red'
-    var w = ctx.canvas.width;
-    var h = ctx.canvas.height;
-    //begins new line
-    ctx.beginPath();
-    ctx.lineWidth = 2;
-    //constant x axis
-    var x = -1;
-  
-    ctx.moveTo(x,amplitude);
-  
-    //sine curve math --> que 
-    while(x < w){
-      //constant y axis
-      let y = h/2 + amplitude * Math.sin((x+step)/frequency);
-      ctx.lineTo(x,y);
-      x++;
-    }
-  
-    ctx.stroke();
-  }
-
-/* harmony default export */ __webpack_exports__["default"] = (sineCurve1);
-
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -388,6 +441,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["clear"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'));
+
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
@@ -401,19 +456,11 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(
-    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),'middle','middle'
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
 )
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])();
 
 //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-let step = 0
-step += 3;
-
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["sineCurve1"])(
-    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
-    step,
-    50,
-    30
-);
 
 
 
