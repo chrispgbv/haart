@@ -107,10 +107,10 @@ function animated(){
   ctx.clearRect(0,0,width,height)
 
   //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-  sineCurve(ctx,width,height,step,50,30);
+  sineCurve(ctx,width,280,step,50,30);
   ctx.restore();
   
-  step +=3;
+  step +=2;
   
   window.requestAnimationFrame(animated);
   
@@ -123,6 +123,7 @@ function animated(){
   //begins new line
   ctx.beginPath();
   ctx.lineWidth = 2;
+  ctx.strokeStyle = 'red'
   //constant x axis
   var x = -1;
   
@@ -156,22 +157,14 @@ function animated(){
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 //function for creating the axis
-function axis(ctx, axisx, axisy) {
+function axis(ctx, axisx, axisy,xline,d) {
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
-    ctx.strokeStyle = 'black'
+
     //if axis function is below grid function 
     // and grid is dotted this removes the axis from
     // dotted back to normal line
     ctx.setLineDash([0, 0]);
-
-    function lines(ctx, moveto1, moveto2, lineto1, lineto2, linewidth) {
-        ctx.beginPath();
-        ctx.moveTo(moveto1, moveto2);
-        ctx.lineTo(lineto1, lineto2)
-        ctx.lineWidth = linewidth;
-        ctx.stroke();
-    }
 
     if (axisy == undefined && axisx == undefined) {
 
@@ -189,18 +182,39 @@ function axis(ctx, axisx, axisy) {
 
     else if (typeof axisx == 'number' && typeof axisy == 'number') {
 
-        lines(ctx, 0, axisy, w, axisy, 2)
-        lines(ctx, axisx, 0, w, axisy, 2)
+        lines(ctx, 0, axisy, w, axisy, 3)
+        lines(ctx, axisx, 0, axisx, h, 3)
     }
 
     else if (axisx == 'middle' && axisy == 'middle') {
 
-        lines(ctx, 0, h / 2, w, h / 2, 2)
+        axisx = w/2;
+        axisy = h/2;
 
-        lines(ctx, w / 2, 0, w / 2, h, 2)
+        lines(ctx, (h / 2), w, (h / 2), 2);
+
+        lines(ctx, (w / 2),(w / 2), h, 2);
+    }
+    // creates the x for the creation of axis points
+    if(xline  = 'pointsx'){
+        let i = 0;
+
+        for(i = axisx; i <= w+2;i += d){
+            lines(ctx,i,axisy,i,axisy+10,1);
+        }
+    
+
     }
 }
 
+function lines(ctx, moveto1, moveto2, lineto1, lineto2, linewidth) {
+    let pix = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(moveto1+ pix, moveto2+ pix);
+    ctx.lineTo(lineto1+ pix, lineto2+ pix)
+    ctx.lineWidth = linewidth;
+    ctx.stroke();
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (axis);
 
@@ -227,27 +241,6 @@ function getCanvas(name) {
 
 /***/ }),
 
-/***/ "./lib/clear.js":
-/*!**********************!*\
-  !*** ./lib/clear.js ***!
-  \**********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function clear(ctx){
-    var width = ctx.canvas.width;
-    var height = ctx.canvas.height;
-
-    ctx.clearRect(0,0,width,height);
-}
-/* harmony default export */ __webpack_exports__["default"] = (clear);
-
-
-
-/***/ }),
-
 /***/ "./lib/grid.js":
 /*!*********************!*\
   !*** ./lib/grid.js ***!
@@ -264,6 +257,7 @@ function grid(ctx, color, style) {
     var h = ctx.canvas.height;
 
     //size variable
+    let i = 0;
     let s = 0;
     //finds the best number to use as the size variable
     if (h % 20 == 0 && w%20 == 0) {
@@ -274,23 +268,12 @@ function grid(ctx, color, style) {
     }
 
     else{
-        for(var i = 40;i>0;i--){
+        for(i = 40;i>=0;i--){
             if(w%i == 0 && h%i == 0){
                 i = s;
-                console.log(i)
                 break;
-        
             }
         }
-    }
-
-    function lines(ctx, color,moveto1, moveto2, lineto1, lineto2, linewidth) {
-        ctx.beginPath();
-        ctx.moveTo(moveto1, moveto2);
-        ctx.lineTo(lineto1, lineto2)
-        ctx.lineWidth = linewidth;
-        ctx.strokeStyle = color;
-        ctx.stroke();
     }
 
     //diferent types of grids for the canvas
@@ -316,32 +299,43 @@ function grid(ctx, color, style) {
 
         for (var x = 0; x <= w; x += s) {
 
-            lines(ctx,color,x,0,x,w,2)
+            lines(ctx,color,x,0,x,w,1)
         }
         for (var y = 0; y <= w; y += s) {
 
-            lines(ctx,color,0,y,w,y,2)
+            lines(ctx,color,0,y,w,y,1)
 
         }
 
     }
 
-    else if (style == 'gridx') {
+    else if (style == 'gridy') {
 
         for (var x = 0; x <= w; x += s) {
             lines(ctx,color,x,0,x,w,2)
         }
         ctx.stroke()
     }
-    else if (style == 'gridy') {
+    else if (style == 'gridx') {
         for (var y = 0; y <= w; y += s) {
             lines(ctx,color,0,y,w,y,2)
         }
         ctx.stroke()
     }
 
-    window.requestAnimationFrame(grid)
+}
 
+function lines(ctx, color,moveto1, moveto2, lineto1, lineto2, linewidth) {
+    
+    //makes the canvas lines sharper
+    let pix = 0.5;
+
+    ctx.beginPath();
+    ctx.moveTo(moveto1 + pix, moveto2+0.5);
+    ctx.lineTo(lineto1 + 0.5, lineto2+0.5);
+    ctx.lineWidth = linewidth;
+    ctx.strokeStyle = color;
+    ctx.stroke();
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (grid);
@@ -352,7 +346,7 @@ function grid(ctx, color, style) {
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas, outer, grid, axis, animated, clear */
+/*! exports provided: getCanvas, outer, grid, axis, animated */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -372,9 +366,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./animated_sine.js */ "./lib/animated_sine.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "animated", function() { return _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _clear_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./clear.js */ "./lib/clear.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "clear", function() { return _clear_js__WEBPACK_IMPORTED_MODULE_5__["default"]; });
-
 
 
 
@@ -390,8 +381,6 @@ __webpack_require__.r(__webpack_exports__);
 
  
 
- 
- 
 
 
 
@@ -407,11 +396,27 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function outer(ctx,color){
+function outer(ctx,color,style){
 
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
 
+
+    if(style == undefined){
+        bg(color,w,h)
+    }
+
+    if(style == 'gradient'){    
+        var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
+    my_gradient.addColorStop(0, "black");
+    my_gradient.addColorStop(1, "white");
+    ctx.fillStyle = my_gradient;
+    ctx.fillRect(20, 20, 150, 100);
+
+    }
+}
+
+function bg(color,w,h){
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, w, h);
@@ -441,7 +446,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["clear"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'));
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
@@ -456,9 +460,15 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(
-    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'), 
+    90, 
+    170,
+    'pointsx',
+    40
 )
+
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])();
+
 
 //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
 
