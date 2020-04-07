@@ -23,7 +23,8 @@ axis(
     90, 
     170,
     'pointsx',
-    40
+    'pointsy',
+    30
 )
 
 animated();
