@@ -166,6 +166,7 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
     // dotted back to normal line
     ctx.setLineDash([0, 0]);
 
+    //if the axis is undefined in both direction creates it at the far left corner like a normal graph
     if (axisy == undefined && axisx == undefined) {
 
         lines(ctx, 1, h - 1, w - 1, h - 1, 1)
@@ -173,6 +174,7 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
 
     }
 
+    //the same as above
     else if (axisx == w && axisy == h) {
 
         lines(ctx, 1, axisy - 1, axisx - 1, axisy - 1, 1)
@@ -180,12 +182,14 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
 
     }
 
+    //if axisx and axis y are numbers the axis will be created inwards to the number that has been created. 
     else if (typeof axisx == 'number' && typeof axisy == 'number') {
 
         lines(ctx, 0, axisy, w, axisy, 3)
         lines(ctx, axisx, 0, axisx, h, 3)
     }
 
+    // if axisy and axisx are inputed as middle the x and y axis will be created in the center of the canvas
     else if (axisx == 'middle' && axisy == 'middle') {
 
         axisx = w/2;
@@ -195,10 +199,12 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
 
         lines(ctx, (w / 2),(w / 2), h, 2);
     }
-    // creates the x for the creation of axis points
+
+    // creates the x for the creation of axis points as pf now only at the positive x axis
     if(xline  == 'pointsx' && yline =='pointsy'){
         let i = axisx;
         let j = 0;
+        let g = 0;
 
         for(i = axisx; i <= w;i += d){
             lines(ctx,i,axisy,i,axisy+10,1);
@@ -207,9 +213,10 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
         for(j = 0;j <= axisy; j+=d){
             lines(ctx,axisx-10,j,axisx,j,1)
         }
-
+        //TODO: 
+        // Create x and y lines for negative y and x axis line
     }
-
+    //TODO add so that the d that is inputted will be resized, if it does not match with the x and y cordinate axis 
 }
 
 function lines(ctx, moveto1, moveto2, lineto1, lineto2, linewidth) {
@@ -240,7 +247,6 @@ function getCanvas(name) {
     var ctx = canvas.getContext('2d');
 
     return ctx;
-
 }
 /* harmony default export */ __webpack_exports__["default"] = (getCanvas);
 
@@ -282,6 +288,8 @@ function grid(ctx, color, style) {
     }
 
     //diferent types of grids for the canvas
+    
+    //creates dotted grid for the x direction
     if (style == 'dotx') {
         for (var x = s; x <= h; x += s) {
             ctx.setLineDash([1, 5]);
@@ -299,7 +307,6 @@ function grid(ctx, color, style) {
         }
     }
     //todo: add dot both ways
-
     else if (style == 'grid') {
 
         for (var x = 0; x <= w; x += s) {
@@ -313,23 +320,24 @@ function grid(ctx, color, style) {
         }
 
     }
-
+    //creates grid only in y direction
     else if (style == 'gridy') {
 
         for (var x = 0; x <= w; x += s) {
             lines(ctx,color,x,0,x,w,2)
         }
-        ctx.stroke()
     }
+
+    //creates grid only in x direction
     else if (style == 'gridx') {
         for (var y = 0; y <= w; y += s) {
             lines(ctx,color,0,y,w,y,2)
         }
-        ctx.stroke()
     }
 
 }
 
+//function fo rcreating the canvas, created t omake code smaller. 
 function lines(ctx, color,moveto1, moveto2, lineto1, lineto2, linewidth) {
     
     //makes the canvas lines sharper
@@ -371,6 +379,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./animated_sine.js */ "./lib/animated_sine.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "animated", function() { return _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
+// imports all the js functions so that when npx webpack is run they are compiled to haart.js the library
+
 
 
 
@@ -401,27 +411,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-function outer(ctx,color,style){
+function outer(ctx,color){
 
+    //gets the height and iwdth of the canvas
     var w = ctx.canvas.width;
     var h = ctx.canvas.height;
 
-
-    if(style == undefined){
-        bg(color,w,h)
-    }
-
-    if(style == 'gradient'){    
-        var my_gradient = ctx.createLinearGradient(0, 0, 0, 170);
-    my_gradient.addColorStop(0, "black");
-    my_gradient.addColorStop(1, "white");
-    ctx.fillStyle = my_gradient;
-    ctx.fillRect(20, 20, 150, 100);
-
-    }
-}
-
-function bg(color,w,h){
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, w, h);
@@ -452,11 +447,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+//teh function has returned teh ctx, so now the othejr functions can use it and manipulate it.
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
+
+//creates the background for the canvas 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
-    '#e4e7f5',
-    'axisxm'
+    '#e4e7f5'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
@@ -470,7 +468,8 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(
     170,
     'pointsx',
     'pointsy',
-    30
+    30,
+    40
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])();

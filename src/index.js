@@ -6,11 +6,14 @@ import { axis } from '../lib';
 import { animated } from '../lib';
 import { axisx } from '../lib';
 
+
+//teh function has returned teh ctx, so now the othejr functions can use it and manipulate it.
 getCanvas('myCanvas');
 
+
+//creates the background for the canvas 
 outer(getCanvas('myCanvas'),
-    '#e4e7f5',
-    'axisxm'
+    '#e4e7f5'
 )
 
 grid(getCanvas('myCanvas'),
@@ -24,7 +27,8 @@ axis(
     170,
     'pointsx',
     'pointsy',
-    30
+    30,
+    40
 )
 
 animated();
