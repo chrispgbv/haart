@@ -204,7 +204,7 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
     if(xline  == 'pointsx' && yline =='pointsy'){
         let i = axisx;
         let j = 0;
-        let g = 0;
+        let k = 0;
 
         for(i = axisx; i <= w;i += d){
             lines(ctx,i,axisy,i,axisy+10,1);
@@ -213,8 +213,16 @@ function axis(ctx, axisx, axisy,xline,yline,d) {
         for(j = 0;j <= axisy; j+=d){
             lines(ctx,axisx-10,j,axisx,j,1)
         }
+
+        for(k = axisx; k>=0;k-=d){
+            lines(ctx,k,axisy,axisx,k,1)
+        }
         //TODO: 
         // Create x and y lines for negative y and x axis line
+
+        //for(k = 0;k <=axisx;j+=d){
+        //    lines(ctx,)
+        //}
     }
     //TODO add so that the d that is inputted will be resized, if it does not match with the x and y cordinate axis 
 }
@@ -261,7 +269,7 @@ function getCanvas(name) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
+//creates the bg grid
 function grid(ctx, color, style) {
 
     var w = ctx.canvas.width;
@@ -454,7 +462,7 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas');
 
 //creates the background for the canvas 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),
-    '#e4e7f5'
+    '	#ffff'
 )
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])('myCanvas'),

@@ -13,7 +13,7 @@ getCanvas('myCanvas');
 
 //creates the background for the canvas 
 outer(getCanvas('myCanvas'),
-    '#e4e7f5'
+    '	#ffff'
 )
 
 grid(getCanvas('myCanvas'),
