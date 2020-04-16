@@ -1,67 +1,62 @@
 :root {
-    --input-padding-x: 1.5rem;
-    --input-padding-y: 0.75rem;
-  }
-  
-  .heeight,
-  .image {
-    min-height: 90vh;
-  }
-  
-  .bg-image {
-    background-color:	#1a2d41;
-    background-size: cover;
-    background-position: center;
-  }
-
-  img{
-    margin-left: 20%;
-    margin-top: 40%;
-  }
-  
-  .bg-img2{
-
-    background-color:#d2d2d2;
-
-  }
-
-  .bgcanv{
-
-    background-color:	#ffff;
-    width: 480px;
-    height:270px;
-    margin-left: 15%;
-    border-radius: 1%;
-  }
-
-  h4{
-    text-align: center;
-    margin-bottom: 50px;
-    color: #7F94A3;
-    font-weight: bold;
-    margin-top: 23%;
-  }
-
-  #myCanvas{
-   padding-top: 20px;
-  }
-
-  #movingCanvas{
-    position: absolute;
-
-  }
-
-  /*Moving the canvases on top of eachother*/
-  canvas {
-    position: absolute;
-    padding-left: 18px;
-    margin-bottom: 20px;
+  --input-padding-x: 1.5rem;
+  --input-padding-y: 0.75rem;
 }
 
+.heeight,
+.image {
+  min-height: 90vh;
+}
 
-  /* Navigation bar*/
+.bg-image {
+  background-color: #1a2d41;
+  background-size: cover;
+  background-position: center;
+}
+
+img {
+  margin-left: 20%;
+  margin-top: 40%;
+}
+
+.bg-img2 {
+  background-color: #d2d2d2;
+}
+
+.bgcanv {
+  background-color: #ffff;
+  width: 480px;
+  height: 270px;
+  margin-left: 15%;
+  border-radius: 1%;
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: 50px;
+  color: #7f94a3;
+  font-weight: bold;
+  margin-top: 23%;
+}
+
+#myCanvas {
+  padding-top: 20px;
+}
+
+#movingCanvas {
+  position: absolute;
+}
+
+/*Moving the canvases on top of eachother*/
+canvas {
+  position: absolute;
+  padding-left: 18px;
+  margin-bottom: 20px;
+}
+
+/* Navigation bar*/
 .nav-link {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 15px;
   text-decoration: none;
   color: #e3fae6;
@@ -95,7 +90,3 @@
 .nav-link-ltr:hover::before {
   width: 100%; /*goes from 0-100% size*/
 }
-
-
-
-  
