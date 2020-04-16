@@ -96,51 +96,59 @@ var haart =
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function animated(){
+/* harmony import */ var _compressions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./compressions.js */ "./lib/compressions.js");
 
-  var canvas = document.getElementById('movingCanvas');
-  var ctx = canvas.getContext('2d');
+
+function animated() {
+  window.requestAnimationFrame(() => {
+    animate(1);
+  });
+}
+
+function animate(step) {
+  var canvas = document.getElementById("movingCanvas");
+  var ctx = canvas.getContext("2d");
   var width = ctx.canvas.width;
-  var height = ctx.canvas.height; 
-  
-  //clears the animation 
-  ctx.clearRect(0,0,width,height)
+  var height = ctx.canvas.height;
+
+  //clears the animation
+  ctx.clearRect(0, 0, width, height);
 
   //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-  sineCurve(ctx,width,280,step,50,30);
+  sineCurve(ctx, width, 280, step, 50, 30);
   ctx.restore();
-  
-  step +=2;
-  
-  window.requestAnimationFrame(animated);
-  
-  }
-  let step = 0
-  
-  //creates the sine curve
-  function sineCurve(ctx,w,h,step,amplitude,frequency){
-  
+  window.requestAnimationFrame(() => {
+    animate(step + 1);
+  });
+}
+
+let step = 0;
+
+//creates the sine curve
+function sineCurve(ctx, w, h, step, amplitude, frequency) {
   //begins new line
   ctx.beginPath();
   ctx.lineWidth = 2;
-  ctx.strokeStyle = 'red'
+  ctx.strokeStyle = "red";
   //constant x axis
   var x = -1;
-  
-  ctx.moveTo(x,amplitude);
-  
-  //sine curve math --> que 
-  while(x < w){
+
+  ctx.moveTo(x, amplitude);
+
+  //sine curve math --> que
+  while (x < w) {
     //constant y axis
-    var y = h/2 + amplitude * Math.sin((x+step)/frequency);
-    ctx.lineTo(x,y);
+    var y = h / 2 + getData(x + step);
+    y = ctx.lineTo(x, y);
     x++;
   }
-  
-  ctx.stroke();
-  
-  }
 
+  ctx.stroke();
+}
+
+function getData(index) {
+  return _compressions_js__WEBPACK_IMPORTED_MODULE_0__["default"][index % _compressions_js__WEBPACK_IMPORTED_MODULE_0__["default"].length] / 100;
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (animated);
 
@@ -157,95 +165,90 @@ function animated(){
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 //function for creating the axis
-function axis(ctx, axisx, axisy,xline,yline,d) {
-    var w = ctx.canvas.width;
-    var h = ctx.canvas.height;
+function axis(ctx, axisx, axisy, xline, yline, d) {
+  var w = ctx.canvas.width;
+  var h = ctx.canvas.height;
 
-    //if axis function is below grid function 
-    // and grid is dotted this removes the axis from
-    // dotted back to normal line
-    ctx.setLineDash([0, 0]);
+  //if axis function is below grid function
+  // and grid is dotted this removes the axis from
+  // dotted back to normal line
+  ctx.setLineDash([0, 0]);
 
-    //if the axis is undefined in both direction creates it at the far left corner like a normal graph
-    if (axisy == undefined && axisx == undefined) {
+  //if the axis is undefined in both direction creates it at the far left corner like a normal graph
+  if (axisy == undefined && axisx == undefined) {
+    lines(ctx, 1, h - 1, w - 1, h - 1, 1);
+    lines(ctx, 1, 1, 1, h - 1, 1);
+  }
 
-        lines(ctx, 1, h - 1, w - 1, h - 1, 1)
-        lines(ctx, 1, 1, 1, h - 1, 1)
+  //the same as above
+  else if (axisx == w && axisy == h) {
+    lines(ctx, 1, axisy - 1, axisx - 1, axisy - 1, 1);
+    lines(ctx, 1, 1, 1, axisy - 1, 1);
+  }
 
+  //if axisx and axis y are numbers the axis will be created inwards to the number that has been created.
+  else if (typeof axisx == "number" && typeof axisy == "number") {
+    lines(ctx, 0, axisy, w, axisy, 3);
+    lines(ctx, axisx, 0, axisx, h, 3);
+  }
+
+  // if axisy and axisx are inputed as middle the x and y axis will be created in the center of the canvas
+  else if (axisx == "middle" && axisy == "middle") {
+    axisx = w / 2;
+    axisy = h / 2;
+
+    lines(ctx, h / 2, w, h / 2, 2);
+
+    lines(ctx, w / 2, w / 2, h, 2);
+  }
+
+  // creates the x for the creation of axis points as pf now only at the positive x axis
+  if (xline == "pointsx" && yline == "pointsy") {
+    let i = axisx;
+    let j = 0;
+    let k = 0;
+    let l = 0;
+
+    //creates positive x axis points
+    for (i = axisx; i <= w; i += d) {
+      lines(ctx, i, axisy, i, axisy + 10, 1);
     }
 
-    //the same as above
-    else if (axisx == w && axisy == h) {
-
-        lines(ctx, 1, axisy - 1, axisx - 1, axisy - 1, 1)
-        lines(ctx, 1, 1, 1, axisy - 1, 1)
-
+    //create negative y axis points
+    for (l = axisy; l >= 0; l -= d) {
+      lines(ctx, axisx, l, axisx - 10, l, 1);
     }
 
-    //if axisx and axis y are numbers the axis will be created inwards to the number that has been created. 
-    else if (typeof axisx == 'number' && typeof axisy == 'number') {
-
-        lines(ctx, 0, axisy, w, axisy, 3)
-        lines(ctx, axisx, 0, axisx, h, 3)
+    //creates negative y axis points
+    for (j = axisy; j <= h; j += d) {
+      lines(ctx, axisx - 10, j, axisx, j, 1);
+    }
+    //creates negative x axis points
+    for (k = axisx; k >= 0; k -= d) {
+      lines(ctx, k, axisy, k, axisy + 10, 1);
     }
 
-    // if axisy and axisx are inputed as middle the x and y axis will be created in the center of the canvas
-    else if (axisx == 'middle' && axisy == 'middle') {
+    //TODO:
+    // Create x and y lines for negative y and x axis line
 
-        axisx = w/2;
-        axisy = h/2;
-
-        lines(ctx, (h / 2), w, (h / 2), 2);
-
-        lines(ctx, (w / 2),(w / 2), h, 2);
-    }
-
-    // creates the x for the creation of axis points as pf now only at the positive x axis
-    if(xline  == 'pointsx' && yline =='pointsy'){
-        let i = axisx;
-        let j = 0;
-        let k = 0;
-        let l = 0;
-
-        //creates positive x axis points
-        for(i = axisx; i <= w;i += d){
-            lines(ctx,i,axisy,i,axisy+10,1);
-        }
-
-        //create negative y axis points
-        for(l = axisy;l>=0; l -=d){
-            lines(ctx,axisx,l,axisx-10,l,1)
-        }
-
-        //creates negative y axis points
-        for(j = axisy;j <= h; j+=d){
-            lines(ctx,axisx-10,j,axisx,j,1)
-        }
-        //creates negative x axis points
-        for(k = axisx; k>=0;k-=d){
-            lines(ctx,k,axisy,k,axisy + 10 ,1)
-        }
-
-        //TODO: 
-        // Create x and y lines for negative y and x axis line
-
-        //for(k = 0;k <=axisx;j+=d){
-        //    lines(ctx,)
-        //}
-    }
-    //TODO add so that the d that is inputted will be resized, if it does not match with the x and y cordinate axis 
+    //for(k = 0;k <=axisx;j+=d){
+    //    lines(ctx,)
+    //}
+  }
+  //TODO add so that the d that is inputted will be resized, if it does not match with the x and y cordinate axis
 }
 
 function lines(ctx, moveto1, moveto2, lineto1, lineto2, linewidth) {
-    let pix = 0.5;
-    ctx.beginPath();
-    ctx.moveTo(moveto1+ pix, moveto2+ pix);
-    ctx.lineTo(lineto1+ pix, lineto2+ pix)
-    ctx.lineWidth = linewidth;
-    ctx.stroke();
+  let pix = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(moveto1 + pix, moveto2 + pix);
+  ctx.lineTo(lineto1 + pix, lineto2 + pix);
+  ctx.lineWidth = linewidth;
+  ctx.stroke();
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (axis);
+
 
 /***/ }),
 
@@ -266,6 +269,62 @@ function getCanvas(name) {
     return ctx;
 }
 /* harmony default export */ __webpack_exports__["default"] = (getCanvas);
+
+/***/ }),
+
+/***/ "./lib/compressions.js":
+/*!*****************************!*\
+  !*** ./lib/compressions.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ([
+  171,
+  457,
+  885,
+  1142,
+  1200,
+  1142,
+  942,
+  685,
+  400,
+  171,
+  0,
+  -114,
+  -228,
+  -285,
+  -314,
+  -285,
+  -142,
+  771,
+  2657,
+  4514,
+  6028,
+  2142,
+  -400,
+  -1800,
+  -2542,
+  -1914,
+  -771,
+  -371,
+  -200,
+  -85,
+  0,
+  28,
+  57,
+  85,
+  171,
+  314,
+  428,
+  600,
+  771,
+  1028,
+  1342,
+]);
+
 
 /***/ }),
 
