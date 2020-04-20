@@ -96,7 +96,16 @@ var haart =
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _compressions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./compressions.js */ "./lib/compressions.js");
+
+
 function animated() {
+  window.requestAnimationFrame(() => {
+    animate(1);
+  });
+}
+
+function animate(step) {
   var canvas = document.getElementById("movingCanvas");
   var ctx = canvas.getContext("2d");
   var width = ctx.canvas.width;
@@ -108,11 +117,11 @@ function animated() {
   //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
   sineCurve(ctx, width, 280, step, 50, 30);
   ctx.restore();
-
-  step += 2;
-
-  window.requestAnimationFrame(animated);
+  window.requestAnimationFrame(() => {
+    animate(step + 1);
+  });
 }
+
 let step = 0;
 
 //creates the sine curve
@@ -129,16 +138,19 @@ function sineCurve(ctx, w, h, step, amplitude, frequency) {
   //sine curve math --> que
   while (x < w) {
     //constant y axis
-    var y = h / 2 + amplitude * Math.sin((x + step) / frequency);
-    ctx.lineTo(x, y);
+    var y = h / 2 + getData(x + step);
+    y = ctx.lineTo(x, y);
     x++;
   }
 
   ctx.stroke();
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (animated);
+function getData(index) {
+  return _compressions_js__WEBPACK_IMPORTED_MODULE_0__["default"][index % _compressions_js__WEBPACK_IMPORTED_MODULE_0__["default"].length] / 100;
+}
 
+/* harmony default export */ __webpack_exports__["default"] = (animated);
 
 /***/ }),
 
@@ -152,9 +164,11 @@ function sineCurve(ctx, w, h, step, amplitude, frequency) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 //function for creating the axis
-function axis(ctx, axisx, axisy, xline, yline, d) {
+function axis(ctx, color, axisx, axisy, px, d1,py, d2) {
   var w = ctx.canvas.width;
   var h = ctx.canvas.height;
+
+  ctx.strokeStyle = color;
 
   //if axis function is below grid function
   // and grid is dotted this removes the axis from
@@ -190,39 +204,45 @@ function axis(ctx, axisx, axisy, xline, yline, d) {
   }
 
   // creates the x for the creation of axis points as pf now only at the positive x axis
-  if (xline == "pointsx" && yline == "pointsy") {
+  if (px == "px" && py == "py") {
     let i = axisx;
     let j = 0;
     let k = 0;
     let l = 0;
 
     //creates positive x axis points
-    for (i = axisx; i <= w; i += d) {
+    for (i = axisx; i <= w; i += d1) {
       lines(ctx, i, axisy, i, axisy + 10, 1);
     }
 
     //create negative y axis points
-    for (l = axisy; l >= 0; l -= d) {
+    for (l = axisy; l >= 0; l -= d2) {
       lines(ctx, axisx, l, axisx - 10, l, 1);
     }
 
     //creates positive y axis points
-    for (j = axisy; j <= h; j += d) {
+    for (j = axisy; j <= h; j += d2) {
       lines(ctx, axisx - 10, j, axisx, j, 1);
     }
     //creates negative x axis points
-    for (k = axisx; k >= 0; k -= d) {
+    for (k = axisx; k >= 0; k -= d1) {
       lines(ctx, k, axisy, k, axisy + 10, 1);
     }
-
-    //TODO:
-    // Create x and y lines for negative y and x axis line
-
-    //for(k = 0;k <=axisx;j+=d){
-    //    lines(ctx,)
-    //}
   }
-  //TODO add so that the d that is inputted will be resized, if it does not match with the x and y cordinate axis
+
+    else if(px =='px' && py == undefined){
+      let i = 0;
+      let k = 0;
+            //creates positive x axis points
+      for (i = axisx; i <= w; i += d1) {
+        lines(ctx, i, axisy, i, axisy + 10, 1);
+      }
+
+      //creates negative x axis points
+      for (k = axisx; k >= 0; k -= d1) {
+        lines(ctx, k, axisy, k, axisy + 10, 1);
+      }
+    }
 }
 
 function lines(ctx, moveto1, moveto2, lineto1, lineto2, linewidth) {
@@ -260,6 +280,62 @@ function getCanvas(name) {
 
 /***/ }),
 
+/***/ "./lib/compressions.js":
+/*!*****************************!*\
+  !*** ./lib/compressions.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ([
+  171,
+  457,
+  885,
+  1142,
+  1200,
+  1142,
+  942,
+  685,
+  400,
+  171,
+  0,
+  -114,
+  -228,
+  -285,
+  -314,
+  -285,
+  -142,
+  771,
+  2657,
+  4514,
+  6028,
+  2142,
+  -400,
+  -1800,
+  -2542,
+  -1914,
+  -771,
+  -371,
+  -200,
+  -85,
+  0,
+  28,
+  57,
+  85,
+  171,
+  314,
+  428,
+  600,
+  771,
+  1028,
+  1342,
+]);
+
+
+/***/ }),
+
 /***/ "./lib/grid.js":
 /*!*********************!*\
   !*** ./lib/grid.js ***!
@@ -270,71 +346,58 @@ function getCanvas(name) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 //creates the bg grid
-function grid(ctx, color, style) {
+function grid(ctx, color, style,d,axisx,axisy) {
   var w = ctx.canvas.width;
   var h = ctx.canvas.height;
 
-  //size variable
-  let i = 0;
-  let s = 0;
-  //finds the best number to use as the size variable
-  if (h % 20 == 0 && w % 20 == 0) {
-    s = 20;
-  } else if (h % 30 == 0 && w % 30 == 0) {
-    s = 30;
-  } else {
-    for (i = 40; i >= 0; i-=i) {
-      if (w % i == 0 && h % i == 0) {
-        i = s;
-        break;
+  //creates dotted grid for the x direction
+
+  if(axisx == undefined && axisy == undefined){
+    if (style == "dotx") {
+        for (var x = d; x <= h; x += d) {
+            //line dash makes small dots
+          ctx.setLineDash([1, 5]);
+    
+          lines(ctx, color, 0, x, w, x, 1);
+        }
+      }
+    
+      //doty does not work yet
+      else if (style == "doty") {
+        for (var y = d; y <= w; y +=d) {
+          ctx.setLineDash([1, 5]);
+          lines(ctx, color, 0,y , w/2, y, 1);
+        }
+      }
+      //todo: add dot both ways
+      else if (style == "grid") {
+
+        for (var x = d; x <= w; x +=d) {
+          lines(ctx, color, 0, x, w, x, 1);
+        }
+
+        for (var y = d; y <= w; y +=d) {
+          lines(ctx, color, y, 1, y, w, 1);
+        }
+      }
+      //creates grid only in y direction
+      else if (style == "gridy") {
+        for (var x = 0; x <= w; x +=d) {
+          lines(ctx, color, x, 0, x, w, 2);
+        }
+      }
+    
+      //creates grid only in x direction
+      else if (style == "gridx") {
+        for (var y = 0; y <= w; y +=d) {
+          lines(ctx, color, 0, y, w, y, 2);
+        }
       }
     }
+
   }
 
-  //diferent types of grids for the canvas
-
-  //creates dotted grid for the x direction
-  if (style == "dotx") {
-    for (var x = s; x <= h; x += s) {
-      ctx.setLineDash([1, 5]);
-
-      lines(ctx, color, 0, x, w, x, 1);
-    }
-  }
-
-  //doty does not work yet
-  else if (style == "doty") {
-    for (var x = s; x <= h; x += s) {
-      ctx.setLineDash([1, 5]);
-      ctx.strokeStyle = color;
-      lines(ctx, color, x, 0, x, y, 2);
-    }
-  }
-  //todo: add dot both ways
-  else if (style == "grid") {
-    for (var x = 0; x <= w; x += s) {
-      lines(ctx, color, x, 0, x, w, 1);
-    }
-    for (var y = 0; y <= w; y += s) {
-      lines(ctx, color, 0, y, w, y, 1);
-    }
-  }
-  //creates grid only in y direction
-  else if (style == "gridy") {
-    for (var x = 0; x <= w; x += s) {
-      lines(ctx, color, x, 0, x, w, 2);
-    }
-  }
-
-  //creates grid only in x direction
-  else if (style == "gridx") {
-    for (var y = 0; y <= w; y += s) {
-      lines(ctx, color, 0, y, w, y, 2);
-    }
-  }
-}
-
-//function fo rcreating the canvas, created t omake code smaller.
+//function fo rcreating the canvas, created t omake codedmaller.
 function lines(ctx, color, moveto1, moveto2, lineto1, lineto2, linewidth) {
   //makes the canvas lines sharper
   let pix = 0.5;
@@ -440,21 +503,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 //teh function has returned teh ctx, so now the othejr functions can use it and manipulate it.
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas");
 
 //creates the background for the canvas
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "	#ffff");
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "#4159a1", "dotx");
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "#4159a1", "dotx",30);
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), 90, 170, "pointsx", "pointsy", 30, 40);
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"),'#000000',100,150,'px',50,'py',30);
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])();
+
 
 //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])();
 
 /***/ }),
 
