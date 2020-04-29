@@ -419,7 +419,7 @@ function lines(ctx, color, moveto1, moveto2, lineto1, lineto2, linewidth) {
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! exports provided: getCanvas, outer, grid, axis, animated */
+/*! exports provided: getCanvas, outer, grid, axis, animated, pos */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -439,7 +439,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./animated_sine.js */ "./lib/animated_sine.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "animated", function() { return _animated_sine_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
+/* harmony import */ var _pos_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pos.js */ "./lib/pos.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pos", function() { return _pos_js__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
 // imports all the js functions so that when npx webpack is run they are compiled to haart.js the library
+
+
+
 
 
 
@@ -484,6 +490,37 @@ function outer(ctx, color) {
 
 /***/ }),
 
+/***/ "./lib/pos.js":
+/*!********************!*\
+  !*** ./lib/pos.js ***!
+  \********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function pos(){
+
+    console.log('hei')
+
+
+
+    let canvases = document.querySelectorAll('canvas')
+
+
+    canvases[0].style.position = 'absolute';
+    canvases[1].style.position = 'absolute';
+    
+    // for(let canvas in canvases){
+    //     canvas.style.position = 'absolute';
+    // }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (pos);
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -513,10 +550,10 @@ Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_
 
 Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"),'#000000',100,150,'px',50,'py',30);
 
-
-
 //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])();
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])(); 
+
+Object(_lib__WEBPACK_IMPORTED_MODULE_1__["pos"])();
 
 /***/ }),
 

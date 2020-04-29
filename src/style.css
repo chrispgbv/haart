@@ -39,54 +39,16 @@ h4 {
   margin-top: 23%;
 }
 
+#movingcanvas{
+  position: absolute;
+}
+
 #myCanvas {
   padding-top: 20px;
 }
 
-#movingCanvas {
-  position: absolute;
-}
-
 /*Moving the canvases on top of eachother*/
 canvas {
-  position: absolute;
   padding-left: 18px;
   margin-bottom: 20px;
-}
-
-/* Navigation bar*/
-.nav-link {
-  font-family: "Montserrat", sans-serif;
-  font-size: 15px;
-  text-decoration: none;
-  color: #e3fae6;
-  padding: 20px 0px;
-  margin: 0px 20px;
-  display: inline-block;
-  position: relative;
-  opacity: 0.75;
-}
-
-.nav-link:hover {
-  opacity: 1;
-}
-
-/*line under on hover*/
-.nav-link::before {
-  transition: 300ms;
-  height: 2px;
-  content: "";
-  position: absolute;
-  background-color: #4159a1;
-}
-
-/*moves line under*/
-.nav-link-ltr::before {
-  width: 0%;
-  bottom: 10px;
-}
-
-/*line appears*/
-.nav-link-ltr:hover::before {
-  width: 100%; /*goes from 0-100% size*/
 }
