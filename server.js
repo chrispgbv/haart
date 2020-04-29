@@ -8,3 +8,4 @@ http
     file.serve(req, res);
   })
   .listen(4000);
+console.log("Server kjører på port: 4000");
