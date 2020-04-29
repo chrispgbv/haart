@@ -115,7 +115,7 @@ function animate(step, data) {
   sineCurve(ctx, width, 280, step, 50, data);
   ctx.restore();
   window.requestAnimationFrame(() => {
-    animate(step + 1);
+    animate(step + 1, data);
   });
 }
 
@@ -481,6 +481,7 @@ fetch("data.json")
     return response.json();
   })
   .then((data) => {
+    console.log(data);
     Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas");
 
     //creates the background for the canvas

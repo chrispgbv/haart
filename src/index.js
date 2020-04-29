@@ -11,6 +11,7 @@ fetch("data.json")
     return response.json();
   })
   .then((data) => {
+    console.log(data);
     getCanvas("myCanvas");
 
     //creates the background for the canvas
