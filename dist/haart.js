@@ -96,16 +96,13 @@ var haart =
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _compressions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./compressions.js */ "./lib/compressions.js");
-
-
-function animated() {
+function animated(data) {
   window.requestAnimationFrame(() => {
-    animate(1);
+    animate(1, data);
   });
 }
 
-function animate(step) {
+function animate(step, data) {
   var canvas = document.getElementById("movingCanvas");
   var ctx = canvas.getContext("2d");
   var width = ctx.canvas.width;
@@ -115,7 +112,7 @@ function animate(step) {
   ctx.clearRect(0, 0, width, height);
 
   //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-  sineCurve(ctx, width, 280, step, 50, 30);
+  sineCurve(ctx, width, 280, step, 50, data);
   ctx.restore();
   window.requestAnimationFrame(() => {
     animate(step + 1);
@@ -125,7 +122,7 @@ function animate(step) {
 let step = 0;
 
 //creates the sine curve
-function sineCurve(ctx, w, h, step, amplitude, frequency) {
+function sineCurve(ctx, w, h, step, amplitude, data) {
   //begins new line
   ctx.beginPath();
   ctx.lineWidth = 2;
@@ -138,7 +135,7 @@ function sineCurve(ctx, w, h, step, amplitude, frequency) {
   //sine curve math --> que
   while (x < w) {
     //constant y axis
-    var y = h / 2 + getData(x + step);
+    var y = h / 2 + getData(x + step, data);
     y = ctx.lineTo(x, y);
     x++;
   }
@@ -146,11 +143,12 @@ function sineCurve(ctx, w, h, step, amplitude, frequency) {
   ctx.stroke();
 }
 
-function getData(index) {
-  return _compressions_js__WEBPACK_IMPORTED_MODULE_0__["default"][index % _compressions_js__WEBPACK_IMPORTED_MODULE_0__["default"].length] / 100;
+function getData(index, data) {
+  return data[index % data.length] / 100;
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (animated);
+
 
 /***/ }),
 
@@ -276,62 +274,6 @@ function getCanvas(name) {
   return ctx;
 }
 /* harmony default export */ __webpack_exports__["default"] = (getCanvas);
-
-
-/***/ }),
-
-/***/ "./lib/compressions.js":
-/*!*****************************!*\
-  !*** ./lib/compressions.js ***!
-  \*****************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ([
-  171,
-  457,
-  885,
-  1142,
-  1200,
-  1142,
-  942,
-  685,
-  400,
-  171,
-  0,
-  -114,
-  -228,
-  -285,
-  -314,
-  -285,
-  -142,
-  771,
-  2657,
-  4514,
-  6028,
-  2142,
-  -400,
-  -1800,
-  -2542,
-  -1914,
-  -771,
-  -371,
-  -200,
-  -85,
-  0,
-  28,
-  57,
-  85,
-  171,
-  314,
-  428,
-  600,
-  771,
-  1028,
-  1342,
-]);
 
 
 /***/ }),
@@ -502,18 +444,11 @@ __webpack_require__.r(__webpack_exports__);
 function pos(){
 
     console.log('hei')
-
-
-
+    
     let canvases = document.querySelectorAll('canvas')
-
 
     canvases[0].style.position = 'absolute';
     canvases[1].style.position = 'absolute';
-    
-    // for(let canvas in canvases){
-    //     canvas.style.position = 'absolute';
-    // }
 
 }
 
@@ -540,20 +475,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//teh function has returned teh ctx, so now the othejr functions can use it and manipulate it.
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas");
 
-//creates the background for the canvas
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "	#ffff");
+fetch("data.json")
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas");
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "#4159a1", "dotx",30);
+    //creates the background for the canvas
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["outer"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "	#ffff");
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"),'#000000',100,150,'px',50,'py',30);
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["grid"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "#4159a1", "dotx", 30);
 
-//creates sine curve, ctx =  canvas, step= time , 50 = height of graph
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])(); 
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["axis"])(Object(_lib__WEBPACK_IMPORTED_MODULE_1__["getCanvas"])("myCanvas"), "#000000", 100, 150, "px", 50, "py", 30);
 
-Object(_lib__WEBPACK_IMPORTED_MODULE_1__["pos"])();
+    //creates sine curve, ctx =  canvas, step= time , 50 = height of graph
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["animated"])(data);
+    Object(_lib__WEBPACK_IMPORTED_MODULE_1__["pos"])();
+  })
+  .catch((err) => {});
+
 
 /***/ }),
 
