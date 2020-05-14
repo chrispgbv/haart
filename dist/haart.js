@@ -98,7 +98,7 @@ var haart =
 __webpack_require__.r(__webpack_exports__);
 function animated(data) {
   window.requestAnimationFrame(() => {
-    animate(1, data);
+    animate(2, data);
   });
 }
 
@@ -148,7 +148,6 @@ function getData(index, data) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (animated);
-
 
 /***/ }),
 
@@ -496,7 +495,6 @@ fetch("data.json")
     Object(_lib__WEBPACK_IMPORTED_MODULE_1__["pos"])();
   })
   .catch((err) => {});
-
 
 /***/ }),
 

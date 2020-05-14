@@ -25,9 +25,9 @@ img {
 
 .bgcanv {
   background-color: #ffff;
-  width: 480px;
-  height: 270px;
-  margin-left: 15%;
+  width: 550px;
+  height: 340px;
+  margin-left: 20%;
   border-radius: 1%;
 }
 
@@ -49,6 +49,7 @@ h4 {
 
 /*Moving the canvases on top of eachother*/
 canvas {
-  padding-left: 18px;
-  margin-bottom: 20px;
+  padding-left: 25px;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
 }
